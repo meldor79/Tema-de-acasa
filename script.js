@@ -1,119 +1,165 @@
 // script.js - Random Fox Generator
 
-// Elementele din DOM
 const foxImg = document.getElementById('fox-img');
 const btnNew = document.getElementById('btn-new');
 const errorMsg = document.getElementById('error-msg');
 
-// URL-ul API-ului pentru vulpi
-const API_URL = 'https://randomfox.ca/floof/';
+const imgIdEl = document.getElementById('img-id');
+const imgUrlEl = document.getElementById('img-url');
+const loadTimeEl = document.getElementById('load-time');
+const displaySizeEl = document.getElementById('display-size');
+const historyContainer = document.getElementById('history');
+const btnClear = document.getElementById('btn-clear');
 
-/**
- * Funcția principală care obține o imagine random cu o vulpe de la API
- * Folosește async/await pentru a gestiona cererea HTTP
- */
-async function getRandomFox() {
+const API_URL = 'https://randomfox.ca/floof/';
+const MAX_HISTORY = 8;
+let historyList = [];
+
+function saveHistory() {
     try {
-        // Log: Începutul încărcării
-        console.log("Se încarcă o vulpe nouă...");
-        
-        // Ascunde mesajele de eroare anterioare
-        errorMsg.style.display = 'none';
-        
-        // Afișează un placeholder de încărcare
-        foxImg.src = "https://placehold.co/600x400?text=Se+încarcă+vulpea...";
-        foxImg.classList.add('loading-shimmer');
-        
-        // Face cererea HTTP către API folosind async/await
-        const response = await fetch(API_URL);
-        
-        // Verifică dacă răspunsul este OK
-        if (!response.ok) {
-            throw new Error(`Eroare HTTP: ${response.status} - ${response.statusText}`);
-        }
-        
-        // Parsează datele JSON primite
-        const data = await response.json();
-        
-        // Log: URL-ul imaginii primite
-        console.log("Imagine primită: " + data.image);
-        
-        // Așteaptă încărcarea completă a imaginii
-        await loadImage(data.image);
-        
-        // Setează imaginea în DOM și ascunde placeholder-ul de încărcare
-        foxImg.src = data.image;
-        foxImg.classList.remove('loading-shimmer');
-        
-    } catch (err) {
-        // Log: Eroare detaliată
-        console.error("Eroare la încărcarea vulpii: " + err.message);
-        
-        // Afișează mesajul de eroare în UI
-        showError(err.message);
-        
-        // Șterge imaginea veche și pune placeholder
-        foxImg.src = "https://placehold.co/600x400?text=Eroare+la+încărcare";
-        foxImg.classList.remove('loading-shimmer');
+        localStorage.setItem('foxHistory', JSON.stringify(historyList));
+    } catch (e) {
+        console.warn('Nu s-a putut salva istoricul:', e);
     }
 }
 
-/**
- * Funcție helper care așteaptă încărcarea completă a unei imagini
- * @param {string} url - URL-ul imaginii de încărcat
- */
+function loadHistory() {
+    try {
+        const raw = localStorage.getItem('foxHistory');
+        if (raw) historyList = JSON.parse(raw);
+    } catch (e) {
+        console.warn('Nu s-a putut citi istoricul:', e);
+        historyList = [];
+    }
+}
+
+function renderHistory() {
+    if (!historyContainer) return;
+    historyContainer.innerHTML = '';
+    historyList.forEach(url => {
+        const t = document.createElement('img');
+        t.src = url;
+        t.alt = 'Vulpe miniatură';
+        t.className = 'thumb';
+        t.addEventListener('click', () => setMainImage(url, true));
+        historyContainer.appendChild(t);
+    });
+}
+
+function addToHistory(url) {
+    historyList = historyList.filter(u => u !== url);
+    historyList.unshift(url);
+    if (historyList.length > MAX_HISTORY) historyList.pop();
+    saveHistory();
+    renderHistory();
+}
+
+function clearHistory() {
+    historyList = [];
+    saveHistory();
+    renderHistory();
+}
+
 function loadImage(url) {
     return new Promise((resolve, reject) => {
         const img = new Image();
-        img.onload = () => resolve();
+        img.onload = () => resolve(img);
         img.onerror = () => reject(new Error('Imaginea nu s-a putut încărca'));
         img.src = url;
     });
 }
 
-/**
- * Funcție care afișează un mesaj de eroare în interfața utilizatorului
- * @param {string} message - Mesajul de eroare de afișat
- */
+async function setMainImage(url, fromHistory = false) {
+    try {
+        hideError();
+        if (foxImg) foxImg.classList.add('loading-shimmer');
+
+        const loaded = await loadImage(url);
+
+        if (foxImg) foxImg.src = url;
+        if (foxImg) foxImg.classList.remove('loading-shimmer');
+
+        if (imgIdEl) {
+            try {
+                const parsed = new URL(url);
+                imgIdEl.textContent = parsed.pathname.split('/').pop() || url;
+            } catch (e) {
+                imgIdEl.textContent = url;
+            }
+        }
+
+        if (imgUrlEl) {
+            imgUrlEl.href = url;
+            imgUrlEl.textContent = url;
+        }
+
+        if (loadTimeEl) loadTimeEl.textContent = new Date().toLocaleString();
+
+        // Measure displayed size after layout
+        requestAnimationFrame(() => {
+            if (displaySizeEl && foxImg) {
+                displaySizeEl.textContent = `${foxImg.clientWidth}×${foxImg.clientHeight} px`;
+            }
+        });
+
+        if (!fromHistory) addToHistory(url);
+    } catch (err) {
+        console.error(err);
+        showError(err.message || String(err));
+        if (foxImg) foxImg.src = 'https://placehold.co/600x400?text=Eroare+la+încărcare';
+        if (foxImg) foxImg.classList.remove('loading-shimmer');
+    }
+}
+
+async function getRandomFox() {
+    try {
+        hideError();
+        if (foxImg) {
+            foxImg.classList.add('loading-shimmer');
+            foxImg.src = 'https://placehold.co/600x400?text=Se+încarcă+vulpea...';
+        }
+
+        // Clear existing history so after generation only the new image remains
+        clearHistory();
+
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error(`Eroare HTTP: ${response.status}`);
+        const data = await response.json();
+        if (!data.image) throw new Error('Răspuns invalid de la API');
+
+        await setMainImage(data.image, false);
+    } catch (err) {
+        console.error('Eroare la încărcarea vulpii:', err);
+        showError(err.message || String(err));
+        if (foxImg) foxImg.src = 'https://placehold.co/600x400?text=Eroare+la+încărcare';
+        if (foxImg) foxImg.classList.remove('loading-shimmer');
+    }
+}
+
 function showError(message) {
-    // Selectează elementul pentru textul de eroare și setează mesajul
     const errorText = document.getElementById('error-text');
-    errorText.textContent = `Eroare: ${message}`;
-    
-    // Afișează containerul de eroare
-    errorMsg.style.display = 'block';
+    if (errorText) errorText.textContent = `Eroare: ${message}`;
+    if (errorMsg) errorMsg.style.display = 'block';
 }
 
-/**
- * Funcție care ascunde mesajul de eroare
- */
 function hideError() {
-    errorMsg.style.display = 'none';
+    if (errorMsg) errorMsg.style.display = 'none';
 }
 
-/**
- * Adaugă event listener pentru butonul de generare vulpe
- * La click, apelează funcția getRandomFox
- */
-btnNew.addEventListener('click', () => {
-    // Ascunde mesajele de eroare anterioare la fiecare click nou
-    hideError();
-    
-    // Generează o vulpe nouă
-    getRandomFox();
-});
-
-/**
- * Inițializează aplicația
- * Apelează getRandomFox la încărcarea paginii pentru o vulpe inițială
- */
 function init() {
-    // Generează o vulpe la încărcarea paginii
+    loadHistory();
+    renderHistory();
+
+    if (btnNew) btnNew.addEventListener('click', () => getRandomFox());
+    if (btnClear) btnClear.addEventListener('click', () => clearHistory());
+
+    if (foxImg) {
+        foxImg.addEventListener('click', () => {
+            if (imgUrlEl && imgUrlEl.href) window.open(imgUrlEl.href, '_blank');
+        });
+    }
+
     getRandomFox();
-    
-    // Log: Aplicația a fost inițializată
-    console.log("Aplicația Random Fox Generator a fost inițializată");
 }
 
-// Rulează inițializarea când DOM-ul este complet încărcat
 document.addEventListener('DOMContentLoaded', init);

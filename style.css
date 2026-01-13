@@ -305,3 +305,83 @@ footer {
         max-height: 300px;
     }
 }
+/* Stiluri pentru metadatele din Pasul 3 – adaugă la finalul fișierului */
+.fox-metadata {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #fffaf5;
+    border-radius: 12px;
+    border: 1px solid #ffe0cc;
+    text-align: left;
+}
+
+.fox-metadata h3 {
+    color: #e67e22;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+#metadata-list {
+    list-style: none;
+}
+
+#metadata-list li {
+    margin: 0.8rem 0;
+    font-size: 1.05rem;
+}
+
+#metadata-list strong {
+    color: #34495e;
+    display: inline-block;
+    min-width: 140px;
+}
+
+#metadata-list a {
+    color: #e67e22;
+    text-decoration: none;
+}
+
+#metadata-list a:hover {
+    text-decoration: underline;
+    color: #d35400;
+}
+
+/* Istoric miniaturi */
+.history {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.history .thumb {
+    width: 96px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid rgba(0,0,0,0.06);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.history .thumb:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+/* Stil pentru buton ștergere istoric */
+#btn-clear {
+    background: #ecf0f1;
+    color: #333;
+    border: 1px solid rgba(0,0,0,0.06);
+    padding: 14px 20px;
+    font-size: 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+#btn-clear:hover {
+    background: #e0e6ea;
+    transform: translateY(-2px);
+}

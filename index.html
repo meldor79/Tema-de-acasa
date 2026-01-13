@@ -147,10 +147,27 @@
     </header>
     
     <div class="container">
-        <img id="fox-img" src="https://placehold.co/600x400?text=Apasa+butonul" alt="Vulpe aleatorie">
+               <img id="fox-img" src="https://placehold.co/600x400?text=Apasa+butonul" alt="Vulpe aleatorie">
+
+        <!-- ADAUGĂ AICI lista nou creată pentru Pasul 3 -->
+        <div class="fox-metadata">
+            <h3>Detalii imagine</h3>
+            <ul id="metadata-list">
+                <li><strong>ID imagine:</strong> <span id="img-id">-</span></li>
+                <li><strong>URL complet:</strong> <a id="img-url" href="#" target="_blank">Vezi original</a></li>
+                <li><strong>Încărcat la:</strong> <span id="load-time">-</span></li>
+                <li><strong>Dimensiune afișată:</strong> <span id="display-size">Încărcare...</span></li>
+            </ul>        </div>
         
-        <button id="btn-new">Încarcă o vulpe nouă!</button>
+        <!-- Istoric miniaturi -->
+        <div id="history" class="history" aria-label="Istoric imagini"></div>
         
+        <!-- Butoane pentru generare și ștergere istoric -->
+        <div style="margin-top:20px; display:flex; gap:12px; justify-content:center;">
+            <button id="btn-new" aria-label="Generează o vulpe">Generează o vulpe</button>
+            <button id="btn-clear" aria-label="Șterge istoricul" title="Șterge istoricul miniaturilor">Șterge istoricul</button>
+        </div>
+
         <div id="error-msg">
             <span class="error-icon">⚠</span>
             <span id="error-text">A apărut o eroare. Te rugăm să încerci din nou.</span>
@@ -161,10 +178,6 @@
         <p>Generare de vulpi aleatorii folosind API-ul RandomFox</p>
         <p class="api-credit">API: https://randomfox.ca/floof/</p>
     </footer>
-
-    <script>
-        // JavaScript-ul va fi adăugat în următorii pași
-        console.log("Pagina Random Fox Generator a fost încărcată");
-    </script>
+<script src="script.js"></script>
 </body>
 </html>
