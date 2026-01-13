@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Fox Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            color: #333;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            color: #e67e22;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        #fox-img {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            max-height: 500px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 8px solid #f8f9fa;
+        }
+        
+        #btn-new {
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+        
+        #btn-new:hover {
+            background-color: #d35400;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+        }
+        
+        #btn-new:active {
+            transform: translateY(0);
+        }
+        
+        #error-msg {
+            display: none;
+            background-color: #ffeaea;
+            border-left: 5px solid #e74c3c;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: left;
+            color: #c0392b;
+            font-weight: 500;
+        }
+        
+        .error-icon {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        footer {
+            margin-top: 40px;
+            color: #7f8c8d;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .api-credit {
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            #btn-new {
+                padding: 16px 32px;
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            #btn-new {
+                padding: 14px 28px;
+                font-size: 1.1rem;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Random Fox Generator</h1>
+    </header>
+    
+    <div class="container">
+               <img id="fox-img" src="https://placehold.co/600x400?text=Apasa+butonul" alt="Vulpe aleatorie">
+
+        <!-- ADAUGĂ AICI lista nou creată pentru Pasul 3 -->
+        <div class="fox-metadata">
+            <h3>Detalii imagine</h3>
+            <ul id="metadata-list">
+                <li><strong>ID imagine:</strong> <span id="img-id">-</span></li>
+                <li><strong>URL complet:</strong> <a id="img-url" href="#" target="_blank">Vezi original</a></li>
+                <li><strong>Încărcat la:</strong> <span id="load-time">-</span></li>
+                <li><strong>Dimensiune afișată:</strong> <span id="display-size">Încărcare...</span></li>
+            </ul>        </div>
+        
+        <!-- Istoric miniaturi -->
+        <div id="history" class="history" aria-label="Istoric imagini"></div>
+        
+        <!-- Butoane pentru generare și ștergere istoric -->
+        <div style="margin-top:20px; display:flex; gap:12px; justify-content:center;">
+            <button id="btn-new" aria-label="Generează o vulpe">Generează o vulpe</button>
+            <button id="btn-clear" aria-label="Șterge istoricul" title="Șterge istoricul miniaturilor">Șterge istoricul</button>
+        </div>
+
+        <div id="error-msg">
+            <span class="error-icon">⚠</span>
+            <span id="error-text">A apărut o eroare. Te rugăm să încerci din nou.</span>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Generare de vulpi aleatorii folosind API-ul RandomFox</p>
+        <p class="api-credit">API: https://randomfox.ca/floof/</p>
+    </footer>
+<script src="script.js"></script>
+</body>
+</html>
