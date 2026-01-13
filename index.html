@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vulpi Aleatorii | Random Fox Generator</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Random Fox Generator</title>
     <style>
         * {
             margin: 0;
@@ -14,236 +13,100 @@
         }
         
         body {
-            background-color: #f9f7f7;
+            background-color: #f5f7fa;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
+            padding: 40px 20px;
             color: #333;
         }
         
-        .container {
-            max-width: 1200px;
-            width: 100%;
-            background-color: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            padding: 40px;
-            text-align: center;
-        }
-        
         header {
+            text-align: center;
             margin-bottom: 40px;
         }
         
         h1 {
             color: #e67e22;
             font-size: 2.8rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-        
-        h1 i {
-            color: #d35400;
-        }
-        
-        .subtitle {
-            color: #7f8c8d;
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-        
-        .fox-display {
-            position: relative;
-            margin: 40px auto;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            min-height: 400px;
-            background-color: #f8f9fa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-        
-        #fox-image {
-            max-width: 90vw;
-            max-height: 70vh;
-            border-radius: 10px;
-            display: none;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .loading-container {
-            padding: 50px;
-            color: #95a5a6;
-        }
-        
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #e67e22;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 25px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .error-container {
-            display: none;
-            padding: 30px;
-            background-color: #ffeaea;
-            border-radius: 10px;
-            border-left: 5px solid #e74c3c;
-            margin: 20px auto;
-            max-width: 800px;
-            text-align: left;
-        }
-        
-        .error-container h3 {
-            color: #c0392b;
             margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
         }
         
-        .error-container p {
-            color: #7f8c8d;
-            line-height: 1.5;
+        .container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
         }
         
-        .button-container {
-            margin: 40px 0;
+        #fox-img {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            max-height: 500px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 8px solid #f8f9fa;
         }
         
-        #load-fox-btn {
-            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+        #btn-new {
+            background-color: #e67e22;
             color: white;
             border: none;
-            padding: 18px 45px;
+            padding: 18px 40px;
             font-size: 1.3rem;
             font-weight: 600;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
-        }
-        
-        #load-fox-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(230, 126, 34, 0.4);
-        }
-        
-        #load-fox-btn:active {
-            transform: translateY(-2px);
-        }
-        
-        #load-fox-btn:disabled {
-            background: #bdc3c7;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .image-info {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            color: #7f8c8d;
-            text-align: left;
-            display: none;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .image-info h3 {
-            color: #e67e22;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-        
-        .image-url {
-            word-break: break-all;
-            background-color: #f1f2f6;
-            padding: 10px;
-            border-radius: 5px;
             margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
         }
         
-        .image-url a {
-            color: #3498db;
-            text-decoration: none;
+        #btn-new:hover {
+            background-color: #d35400;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
         }
         
-        .image-url a:hover {
-            text-decoration: underline;
+        #btn-new:active {
+            transform: translateY(0);
         }
         
-        .counter {
+        #error-msg {
+            display: none;
+            background-color: #ffeaea;
+            border-left: 5px solid #e74c3c;
+            padding: 20px;
+            border-radius: 10px;
             margin-top: 30px;
-            font-size: 1.1rem;
-            color: #7f8c8d;
-            background-color: #f8f9fa;
-            padding: 12px 25px;
-            border-radius: 50px;
-            display: inline-block;
+            text-align: left;
+            color: #c0392b;
+            font-weight: 500;
+        }
+        
+        .error-icon {
+            font-weight: bold;
+            margin-right: 10px;
         }
         
         footer {
             margin-top: 40px;
-            padding-top: 25px;
-            border-top: 1px solid #eee;
-            color: #95a5a6;
-            font-size: 0.95rem;
-            text-align: center;
-            max-width: 800px;
-        }
-        
-        .api-link {
-            color: #e67e22;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        .api-link:hover {
-            text-decoration: underline;
-        }
-        
-        .status-log {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 0.9rem;
             color: #7f8c8d;
-            text-align: left;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            max-height: 200px;
-            overflow-y: auto;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .api-credit {
+            margin-top: 5px;
+            font-style: italic;
         }
         
         @media (max-width: 768px) {
@@ -255,16 +118,8 @@
                 font-size: 2.2rem;
             }
             
-            .subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .fox-display {
-                min-height: 350px;
-            }
-            
-            #load-fox-btn {
-                padding: 16px 35px;
+            #btn-new {
+                padding: 16px 32px;
                 font-size: 1.2rem;
             }
         }
@@ -274,263 +129,42 @@
                 font-size: 1.8rem;
             }
             
-            .subtitle {
-                font-size: 1rem;
+            .container {
+                padding: 20px;
             }
             
-            .fox-display {
-                min-height: 300px;
-            }
-            
-            #load-fox-btn {
-                padding: 14px 30px;
+            #btn-new {
+                padding: 14px 28px;
                 font-size: 1.1rem;
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Random Fox Generator</h1>
+    </header>
+    
     <div class="container">
-        <header>
-            <h1><i class="fas fa-paw"></i> Vulpi Aleatorii <i class="fas fa-paw"></i></h1>
-            <p class="subtitle">Apeși butonul pentru a obține o imagine aleatorie cu o vulpe. Fiecare imagine este furnizată de API-ul RandomFox.</p>
-        </header>
+        <img id="fox-img" src="https://placehold.co/600x400?text=Apasa+butonul" alt="Vulpe aleatorie">
         
-        <main>
-            <!-- Container pentru afișarea imaginii -->
-            <div class="fox-display">
-                <div class="loading-container" id="loading-container">
-                    <div class="loading-spinner"></div>
-                    <p>Se încarcă o vulpe...</p>
-                </div>
-                
-                <img id="fox-image" alt="Imagine cu o vulpe">
-            </div>
-            
-            <!-- Container pentru erori -->
-            <div class="error-container" id="error-container">
-                <h3><i class="fas fa-exclamation-triangle"></i> Eroare</h3>
-                <p id="error-message">A apărut o eroare. Te rugăm să încerci din nou.</p>
-            </div>
-            
-            <!-- Informații despre imagine -->
-            <div class="image-info" id="image-info">
-                <h3>Informații despre imagine:</h3>
-                <p>URL-ul imaginii:</p>
-                <div class="image-url">
-                    <a href="#" target="_blank" id="image-url"></a>
-                </div>
-            </div>
-            
-            <!-- Buton pentru încărcarea unei noi vulpi -->
-            <div class="button-container">
-                <button id="load-fox-btn">
-                    <i class="fas fa-random"></i>
-                    <span>Generează o vulpe aleatorie</span>
-                </button>
-            </div>
-            
-            <!-- Contor pentru numărul de vulpi afișate -->
-            <div class="counter">
-                <span id="counter-text">Ai afișat <span id="counter">0</span> vulpi</span>
-            </div>
-            
-            <!-- Log pentru status-ul cererilor -->
-            <div class="status-log">
-                <h3>Log cereri:</h3>
-                <div id="request-log"></div>
-            </div>
-        </main>
+        <button id="btn-new">Încarcă o vulpe nouă!</button>
         
-        <footer>
-            <p>Acest site folosește <a href="https://randomfox.ca/floof/" class="api-link" target="_blank">API-ul RandomFox</a> pentru a obține imagini aleatorii cu vulpi.</p>
-            <p>© 2023 - Toate imaginile aparțin proprietarilor lor respectivi.</p>
-        </footer>
+        <div id="error-msg">
+            <span class="error-icon">⚠</span>
+            <span id="error-text">A apărut o eroare. Te rugăm să încerci din nou.</span>
+        </div>
     </div>
+    
+    <footer>
+        <p>Generare de vulpi aleatorii folosind API-ul RandomFox</p>
+        <p class="api-credit">API: https://randomfox.ca/floof/</p>
+    </footer>
 
     <script>
-        // Elementele din DOM
-        const foxImage = document.getElementById('fox-image');
-        const loadFoxBtn = document.getElementById('load-fox-btn');
-        const loadingContainer = document.getElementById('loading-container');
-        const errorContainer = document.getElementById('error-container');
-        const errorMessage = document.getElementById('error-message');
-        const imageInfo = document.getElementById('image-info');
-        const imageUrl = document.getElementById('image-url');
-        const counterElement = document.getElementById('counter');
-        const counterText = document.getElementById('counter-text');
-        const requestLog = document.getElementById('request-log');
-        
-        // Variabile pentru stare
-        let imageCounter = 0;
-        const API_URL = 'https://randomfox.ca/floof/';
-        
-        /**
-         * Funcția principală pentru încărcarea unei imagini aleatorii cu vulpe
-         * Folosește async/await pentru a gestiona cererea HTTP
-         */
-        async function loadRandomFox() {
-            // Log: Început cerere
-            console.log('Început cerere către API-ul RandomFox');
-            logToUI('Început cerere către API-ul RandomFox');
-            
-            // Resetăm orice eroare anterioară
-            hideError();
-            
-            // Afișăm indicatorul de încărcare
-            showLoading();
-            
-            // Ascundem imaginea anterioară
-            foxImage.style.display = 'none';
-            imageInfo.style.display = 'none';
-            
-            // Dezactivăm butonul în timpul încărcării
-            loadFoxBtn.disabled = true;
-            loadFoxBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Se încarcă...</span>';
-            
-            try {
-                // Log: URL-ul cerut
-                console.log('URL cerut:', API_URL);
-                logToUI(`URL cerut: ${API_URL}`);
-                
-                // Facem cererea către API folosind fetch cu async/await
-                const response = await fetch(API_URL);
-                
-                // Verificăm dacă răspunsul este OK
-                if (!response.ok) {
-                    throw new Error(`Eroare HTTP: ${response.status} ${response.statusText}`);
-                }
-                
-                // Parsăm datele JSON primite
-                const data = await response.json();
-                
-                // Log: Date primite cu succes
-                console.log('Date primite cu succes de la API:', data);
-                console.log('URL imagine:', data.image);
-                logToUI('Date primite cu succes de la API');
-                logToUI(`URL imagine: ${data.image}`);
-                
-                // Setăm sursa imaginii
-                foxImage.src = data.image;
-                foxImage.alt = 'Imagine aleatorie cu o vulpe';
-                
-                // Așteptăm încărcarea imaginii
-                await new Promise((resolve, reject) => {
-                    foxImage.onload = resolve;
-                    foxImage.onerror = () => reject(new Error('Imaginea nu s-a putut încărca'));
-                    
-                    // Timeout pentru cazul în care imaginea durează prea mult să se încarce
-                    setTimeout(() => {
-                        reject(new Error('Timeout la încărcarea imaginii'));
-                    }, 10000);
-                });
-                
-                // Ascundem indicatorul de încărcare
-                hideLoading();
-                
-                // Afișăm imaginea
-                foxImage.style.display = 'block';
-                
-                // Actualizăm informațiile despre imagine
-                imageUrl.href = data.image;
-                imageUrl.textContent = data.image;
-                imageInfo.style.display = 'block';
-                
-                // Incrementăm contorul
-                imageCounter++;
-                updateCounter();
-                
-            } catch (error) {
-                // Log: Eroare + mesaj clar
-                console.error('Eroare la încărcarea vulpii:', error.message);
-                logToUI(`EROARE: ${error.message}`);
-                
-                // Afișăm eroarea în interfața utilizatorului
-                showError(`Eroare: ${error.message}. Te rugăm să încerci din nou.`);
-                
-                // Ascundem indicatorul de încărcare
-                hideLoading();
-                
-            } finally {
-                // Reactivăm butonul indiferent de rezultat
-                loadFoxBtn.disabled = false;
-                loadFoxBtn.innerHTML = '<i class="fas fa-random"></i><span>Generează o vulpe aleatorie</span>';
-            }
-        }
-        
-        /**
-         * Afișează indicatorul de încărcare
-         */
-        function showLoading() {
-            loadingContainer.style.display = 'block';
-        }
-        
-        /**
-         * Ascunde indicatorul de încărcare
-         */
-        function hideLoading() {
-            loadingContainer.style.display = 'none';
-        }
-        
-        /**
-         * Afișează un mesaj de eroare în interfață
-         * @param {string} message - Mesajul de eroare de afișat
-         */
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorContainer.style.display = 'block';
-        }
-        
-        /**
-         * Ascunde mesajul de eroare
-         */
-        function hideError() {
-            errorContainer.style.display = 'none';
-        }
-        
-        /**
-         * Actualizează contorul de vulpi afișate
-         */
-        function updateCounter() {
-            counterElement.textContent = imageCounter;
-            
-            if (imageCounter === 1) {
-                counterText.textContent = 'Ai afișat 1 vulpe';
-            } else {
-                counterText.textContent = `Ai afișat ${imageCounter} vulpi`;
-            }
-        }
-        
-        /**
-         * Adaugă un mesaj în log-ul din interfață
-         * @param {string} message - Mesajul de adăugat
-         */
-        function logToUI(message) {
-            const timestamp = new Date().toLocaleTimeString();
-            const logEntry = document.createElement('div');
-            logEntry.textContent = `[${timestamp}] ${message}`;
-            logEntry.style.padding = '5px 0';
-            logEntry.style.borderBottom = '1px solid #eee';
-            requestLog.appendChild(logEntry);
-            
-            // Limităm log-ul la ultimele 10 mesaje
-            if (requestLog.children.length > 10) {
-                requestLog.removeChild(requestLog.firstChild);
-            }
-            
-            // Scroll la ultimul mesaj
-            requestLog.scrollTop = requestLog.scrollHeight;
-        }
-        
-        // Adăugăm eveniment de click pe buton
-        loadFoxBtn.addEventListener('click', loadRandomFox);
-        
-        // Încărcăm prima vulpe la deschiderea paginii
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('Pagina a fost încărcată. Generare vulpe inițială...');
-            logToUI('Pagina încărcată. Generare vulpe inițială...');
-            loadRandomFox();
-        });
+        // JavaScript-ul va fi adăugat în următorii pași
+        console.log("Pagina Random Fox Generator a fost încărcată");
     </script>
 </body>
 </html>

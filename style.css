@@ -1,0 +1,307 @@
+/* style.css - Random Fox Generator */
+
+/* Reset și stiluri generale */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #ff6200 0%, #ff8c42 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    display: inline-block;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, #ff6200 0%, #ff8c42 100%);
+    border-radius: 2px;
+}
+
+/* Container principal */
+.container {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 50px;
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid rgba(255, 98, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+    box-shadow: 
+        0 15px 50px rgba(0, 0, 0, 0.12),
+        0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Imagine */
+#fox-img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.15),
+        0 2px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid white;
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+#fox-img:hover {
+    transform: scale(1.01);
+    box-shadow: 
+        0 12px 35px rgba(0, 0, 0, 0.2),
+        0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Buton */
+#btn-new {
+    background: linear-gradient(135deg, #ff6200 0%, #ff8c42 100%);
+    color: white;
+    border: none;
+    padding: 18px 45px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 10px;
+    box-shadow: 
+        0 6px 20px rgba(255, 98, 0, 0.25),
+        0 2px 8px rgba(255, 98, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+}
+
+#btn-new::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent);
+    transition: left 0.6s ease;
+}
+
+#btn-new:hover {
+    background: linear-gradient(135deg, #e55a00 0%, #ff7a2e 100%);
+    transform: scale(1.05) translateY(-3px);
+    box-shadow: 
+        0 10px 30px rgba(255, 98, 0, 0.35),
+        0 4px 15px rgba(255, 98, 0, 0.25);
+}
+
+#btn-new:hover::before {
+    left: 100%;
+}
+
+#btn-new:active {
+    transform: scale(1.02) translateY(-1px);
+    box-shadow: 
+        0 4px 15px rgba(255, 98, 0, 0.3),
+        0 1px 5px rgba(255, 98, 0, 0.2);
+}
+
+/* Mesaj eroare */
+#error-msg {
+    display: none;
+    background-color: #ffeded;
+    border-left: 4px solid #ff4444;
+    padding: 20px 25px;
+    border-radius: 10px;
+    margin-top: 30px;
+    text-align: left;
+    color: #c62828;
+    font-weight: 500;
+    animation: slideIn 0.3s ease-out;
+    border: 1px solid #ffcccc;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.error-icon {
+    font-weight: bold;
+    margin-right: 12px;
+    font-size: 1.2rem;
+    display: inline-block;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Footer */
+footer {
+    margin-top: 50px;
+    color: #7f8c8d;
+    text-align: center;
+    font-size: 0.95rem;
+    max-width: 900px;
+    width: 100%;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.api-credit {
+    margin-top: 10px;
+    font-style: italic;
+    color: #95a5a6;
+    font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    body {
+        padding: 20px 15px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+    
+    h1::after {
+        width: 60px;
+        bottom: -8px;
+    }
+    
+    .container {
+        padding: 30px 20px;
+        border-radius: 16px;
+    }
+    
+    #fox-img {
+        margin-bottom: 30px;
+        border-radius: 10px;
+        max-height: 400px;
+    }
+    
+    #btn-new {
+        padding: 16px 30px;
+        font-size: 1.1rem;
+        width: 100%;
+        border-radius: 10px;
+    }
+    
+    #btn-new:hover {
+        transform: scale(1.03) translateY(-2px);
+    }
+    
+    #error-msg {
+        padding: 16px 20px;
+        font-size: 0.95rem;
+        margin-top: 25px;
+    }
+    
+    footer {
+        margin-top: 30px;
+        font-size: 0.85rem;
+        padding: 15px;
+    }
+    
+    .api-credit {
+        font-size: 0.8rem;
+    }
+}
+
+/* Animație pentru încărcare */
+@keyframes shimmer {
+    0% { background-position: -200px 0; }
+    100% { background-position: calc(200px + 100%) 0; }
+}
+
+.loading-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 12px;
+}
+
+/* Efect de focus pentru accesibilitate */
+#btn-new:focus,
+#fox-img:focus {
+    outline: 3px solid rgba(255, 98, 0, 0.5);
+    outline-offset: 3px;
+}
+
+/* Stil pentru placeholder */
+#fox-img[src*="placehold"] {
+    background-color: #f0f0f0;
+    border: 2px dashed #ddd;
+    padding: 40px;
+}
+
+/* Media Query pentru ecrane foarte mici */
+@media (max-width: 400px) {
+    h1 {
+        font-size: 1.7rem;
+    }
+    
+    .container {
+        padding: 25px 15px;
+    }
+    
+    #fox-img {
+        max-height: 300px;
+    }
+}
